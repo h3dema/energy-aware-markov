@@ -14,15 +14,15 @@ def analyze_markov_chain(csv_file='markov_chain_results.csv'):
     # Calculate transition probabilities
     transitions = df.groupby(['state_before', 'state_after']).size().unstack()
 
-    # Estimate delta0 (active -> inactive)
+    # Estimate delta1 (active -> inactive)
     active_total = transitions.loc['active'].sum()
     active_to_inactive = transitions.loc['active', 'inactive'] if 'inactive' in transitions.loc['active'] else 0
-    delta0_est = active_to_inactive / active_total if active_total > 0 else 0
+    delta1_est = active_to_inactive / active_total if active_total > 0 else 0
 
-    # Estimate delta1 (inactive -> active)
+    # Estimate delta0 (inactive -> active)
     inactive_total = transitions.loc['inactive'].sum()
     inactive_to_active = transitions.loc['inactive', 'active'] if 'active' in transitions.loc['inactive'] else 0
-    delta1_est = inactive_to_active / inactive_total if inactive_total > 0 else 0
+    delta0_est = inactive_to_active / inactive_total if inactive_total > 0 else 0
 
     # Plot the state transitions
     plt.figure(figsize=(12, 6))
